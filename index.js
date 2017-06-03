@@ -1,29 +1,28 @@
-function findMinAndRemoveSorted(array){
-  return array.shift()
+function findMinAndRemoveSorted(array) {
+  return array.splice(array.indexOf(Math.min(...array)), 1)
 }
 
-function merge(firstSubarray, secondSubArray){
-  let sorted = []
-  while(firstSubarray.length != 0 && secondSubArray.length != 0){
-    if(firstSubarray[0] < secondSubArray[0]){
-      sorted.push(findMinAndRemoveSorted(firstSubarray))
+function merge(sortedOne, sortedTwo) {
+  // combine two sorted arrays into one sorted array
+  var sortedArray = []
+
+  while(sortedOne.length != 0 && sortedTwo.length != 0){
+    var firstOne = sortedOne[0]
+    var firstTwo = sortedTwo[0]
+    if(firstOne < firstTwo){
+      sortedArray.push(sortedOne.shift())
     } else {
-      sorted.push(findMinAndRemoveSorted(secondSubArray))
+      sortedArray.push(sortedTwo.shift())
     }
   }
-  return sorted.concat(firstSubarray).concat(secondSubArray)
+  return sortedArray.concat(sortedOne).concat(sortedTwo)
 }
 
-function mergeSort(array){
-  let midpoint = array.length/2
-  let firstHalf = array.slice(0, midpoint)
-  let secondHalf = array.slice(midpoint, array.length)
-  let sorted;
+function mergeSort(array) {
+  let mid = array.length/2
+  let firstHalf = array.slice(0, mid)
+  let secondHalf = array.slice(mid, array.length)
 
-  if(array.length < 2){
-    return array
-  } else {
-    sorted = merge(mergeSort(firstHalf), mergeSort(secondHalf))
-  }
-  return sorted
+  if(array.length == 1){ return array }
+  return merge(mergeSort(firstHalf), mergeSort(secondHalf))
 }
